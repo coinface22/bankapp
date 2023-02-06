@@ -1,0 +1,43 @@
+{% extends 'user/user-base.html' %}
+{% block content %}
+<div class="container">
+    <div class="card  w-75 mx-auto">
+    <div class="card-header text-center">
+      Your account Information
+    </div>
+    <div class="card-body">
+      <table class="table table-striped table-dark w-75 mx-auto">
+    <thead>
+      <tr>
+        <td scope="col">Account No.</td>
+        <th scope="col">{{account.account_number}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Branch</th>
+        <td>{{account.branch.name}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Branch Code</th>
+        <td>{{account.branch.number}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Account Type</th>
+        <td>{{account.account_type}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Account Created</th>
+        <td>{{account.date_created}}</td>
+      </tr>
+    </tbody>
+  </table>
+        
+    </div>
+    <div class="card-footer text-muted">
+     Banking
+    </div>
+  </div>
+  
+  </div>
+{% endblock %}

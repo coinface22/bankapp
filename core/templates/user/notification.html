@@ -1,0 +1,21 @@
+{% extends 'user/user-base.html' %}
+{% block content %}
+<div class="container">
+    <div class="card  w-75 mx-auto">
+    <div class="card-header text-center">
+      Notification from Bank
+    </div>
+    <div class="card-body">
+        {% for obj in object_list %}
+        <div class='alert alert-success'>{{obj.message}}</div>
+        {% empty %}
+        <div class='alert alert-info'>Notice box empty</div>
+        {% endfor %}
+    </div>
+    <div class="card-footer text-muted">
+     Banking
+    </div>
+  </div>
+  
+  </div>
+{% endblock %}

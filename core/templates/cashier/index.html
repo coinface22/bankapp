@@ -1,0 +1,64 @@
+{% extends 'cashier/cashier-base.html' %}
+{% block title %}Cashier Dashboard{% endblock %}
+{% block content %}
+<div class="row w-100" style="padding: 11px">
+    <div class="col">
+      <div class="card text-center w-75 mx-auto">
+    <div class="card-header">
+      Account Information
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        <form method="get">
+            <div class="alert alert-success w-50 mx-auto">
+              <h5>Enter Account Number</h5>
+              <input type="text" name="acc_no" class="form-control " placeholder="Enter Account number" required>
+              <button type="submit" class="btn btn-primary btn-bloc btn-sm my-1">Get Account Info</button>
+            </div>
+        </form>
+      </p>
+      {% if account %}
+      
+              <div class='row'>
+                    <div class='col'>
+                    
+                      Account No.
+                      <input type='text' value='{{account.account_number}}' name='acc_no' class='form-control ' readonly required>
+                      Account Holder Name.
+                <input type='text' class='form-control' value='{{account.first_name}} {{account.last_name}}' readonly required>
+                      Account Holder Bank Name.
+                      <input type='text' class='form-control' value='Banking' readonly required>Bank Balance
+                      <input type='text' class='form-control my-1'  value='{{account.balance}}' readonly required>
+                       
+                    
+                    </div>
+                    <div class='col'>
+                      Transaction Process.
+                      <form method='POST'>
+                       {% csrf_token %}
+                      <input type='hidden' value='{{account.account_number}}' name='acc_no' class='form-control ' required>
+                      <input type='hidden' value='withdraw' name='transaction_type' class='form-control ' required>
+                      <Textarea placeholder="Description" name="description" class="form-control my-1"></Textarea>
+                      <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount for withdraw' max='{{account.balance}}' required>
+                     <button type='submit' name='withdraw' class='btn btn-primary btn-bloc btn-sm my-1'> Withdraw</button>
+                    </form>
+                     <form method='POST'>
+                        {% csrf_token %}
+                        <input type='hidden' value='{{account.account_number}}' name='acc_no' class='form-control ' required>
+                      <input type='hidden' value='deposit' name='transaction_type' class='form-control ' required> 
+                      <Textarea placeholder="Description" name="description" class="form-control my-1"></Textarea>
+                      <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount for deposit'  required>
+                     <button type='submit' name='deposit' class='btn btn-success btn-bloc btn-sm my-1'> Deposit</button></form>
+                    </div>
+                  </div>
+         
+    {% endif %}
+    </div>
+    <div class="card-footer text-muted">
+      Banking
+    </div>
+  </div>
+    </div>
+    
+  </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'manager/manager-base.html' %}
+{% block title %}Send Notification to {{user.email}}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card w-100 text-center shadowBlue">
+      <div class="card-header">
+        Send Notice to {{user.email}}
+      </div>
+      <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+              <div class="alert alert-success w-50 mx-auto">
+                <h5>Write notice for {{user.email}}</h5>
+                <textarea class="form-control" name="message" required placeholder="Write your message"></textarea>
+                <button type="submit" name="send" class="btn btn-primary btn-block btn-sm my-1">Send</button>
+              </div>
+        </form>
+       
+      </div>
+      <div class="card-footer text-muted">
+        Banking
+      </div>
+    </div>
+{% endblock %}

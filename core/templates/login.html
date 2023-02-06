@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+{% for message in messages %}
+  <div class="message-box">
+    <div class='alert alert-{{message.tags}} alert-dismiss'>{{message}}</div>
+  </div>
+  {% endfor %}
+<div style="background: url({% static 'images/banking_wp.jpg' %});background-size: 100%; min-height: 100vh; background-repeat: no-repeat;">
+    <h1 class="alert alert-dark bg-gradient-dark rounded-0">Banking</h1>
+    
+    <div id="accordion" role="tablist" class="w-25 float-right shadowBlack pb-2" style="margin-right: 222px">
+        <br><h4 class="text-center">Select Your Session</h4>
+        <p style="font-size: 14px; color: rgb(188, 21, 21); text-align: center;">{{form.non_field_errors|default:""}}</p>
+      <div class="card rounded-0 pt-2">
+        <div class="card-header" role="tab" id="headingOne">
+          <h5 class="mb-0">
+            <a style="text-decoration: none;" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+             <button class="btn btn-outline-primary btn-block">User Login</button>
+            </a>
+          </h5>
+        </div>
+    
+        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+           <form method="POST">
+                {% csrf_token %}
+               <input type="email" value="{{form.email.value|default:''}}" name="email" class="form-control mb-1" required placeholder="Enter Email">
+               <input type="password" name="password" value="{{form.password.value|default:''}}" class="form-control mb-1" required placeholder="Enter Password">
+               <button type="submit" class="btn btn-primary btn-block btn-sm my-1" name="userLogin">Enter </button>
+           </form>
+          </div>
+        </div>
+      </div>
+      <div class="card rounded-0">
+        <div class="card-header" role="tab" id="headingTwo">
+          <h5 class="mb-0">
+            <a class="collapsed btn btn-outline-primary btn-block" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Manager Login
+            </a>
+          </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+          <div class="card-body">
+             <form method="POST">
+                {% csrf_token %}
+                <input type="email" value="{{form.email.value|default:''}}" name="email" class="form-control mb-1" required placeholder="Enter Email">
+                <input type="password" name="password" value="{{form.password.value|default:''}}" class="form-control mb-1" required placeholder="Enter Password">
+               <button type="submit" class="btn btn-primary btn-block btn-sm my-1" name="managerLogin">Enter </button>
+           </form>
+          </div>
+        </div>
+      </div>
+      <div class="card rounded-0">
+        <div class="card-header" role="tab" id="headingThree">
+          <h5 class="mb-0">
+            <a class="collapsed btn btn-outline-primary btn-block" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+             Cashier Login
+            </a>
+          </h5>
+        </div>
+        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+          <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="email" value="{{form.email.value|default:''}}" name="email" class="form-control mb-1" required placeholder="Enter Email">
+                <input type="password" name="password" value="{{form.password.value|default:''}}" class="form-control mb-1" required placeholder="Enter Password">
+               <button type="submit"  class="btn btn-primary btn-block btn-sm my-1" name="cashierLogin">Enter </button>
+           </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+{% endblock %}

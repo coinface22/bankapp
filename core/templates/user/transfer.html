@@ -1,0 +1,50 @@
+{% extends 'user/user-base.html' %}
+{% block content %}
+<div class="container">
+    <div class="card  w-75 mx-auto">
+    <div class="card-header text-center">
+      Funds Transfer
+    </div>
+    <div class="card-body">
+        <form method="get">
+            <div class="alert alert-success w-50 mx-auto">
+              <h5>New Transfer</h5>
+              <input type="text" name="acc_no" class="form-control " placeholder="Enter Receiver Account number" required>
+              <button type="submit" class="btn btn-primary btn-bloc btn-sm my-1">Get Account Info</button>
+            </div>
+        </form>
+        {% if account %}
+        <div class='alert alert-success w-50 mx-auto'>
+            <form method='POST'>
+                {% csrf_token %}
+              Account No.
+              <input type='text' value='{{account.account_number}}' name='otherNo' class='form-control ' readonly required>
+              Account Holder Name.
+              <input type='text' class='form-control' value='{{account.first_name}} {{account.last_name}}' readonly required>
+              Account Holder Bank Name.
+              <input type='text' class='form-control' value='Banking' readonly required>
+              Enter Amount for transfer.
+              <input type="hidden" name="account_id" value="{{account.id}}">
+              <input type='number' name='amount' class='form-control' min='1' max='{{request.user.account.balance}}' required>
+              <button type='submit' name='transfer' class='btn btn-primary btn-bloc btn-sm my-1'>Transfer</button>
+            </form>
+          </div>
+        {% endif %}
+        
+      <br>
+      <h5>Transfer History</h5>
+      <div id="list-group rounded-0">
+        {% for transfer in transfers %}
+        <div class='list-group-item list-group-item-action bg-gradient-info'>Transfer have been made for {{transfer.amount}} from your account at {{transfer.date_created}} in  account no. {{transfer.sent_to.account_number}}</div>
+        {% empty %}
+        <div class='list-group-item list-group-item-action text-muted'>You have made no transfer yet.</div>
+        {% endfor %}
+      </div> 
+    </div>
+    <div class="card-footer text-muted">
+     Banking
+    </div>
+  </div>
+  
+  </div>
+{% endblock %}

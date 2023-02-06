@@ -1,0 +1,45 @@
+{% extends 'manager/manager-base.html' %}
+{% block title %}Account profile for {{object.first_name}} {{object.last_name}}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card w-100 text-center shadowBlue">
+      <div class="card-header">
+        Account profile for {{object.first_name}} {{object.last_name}} #{{object.account_number}}
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <td>Name</td>
+              <th>{{object.first_name}} {{object.middle_name}} {{object.last_name}}</th>
+              <td>Account No</td>
+              <th>{{object.account_number}}</th>
+            </tr><tr>
+              <td>Branch Name</td>
+              <th>{{object.branch.name}}</th>
+              <td>Branch Code</td>
+              <th>{{object.branch.number}}</th>
+            </tr><tr>
+              <td>Current Balance</td>
+              <th>{{object.balance}}</th>
+              <td>Account Type</td>
+              <th>{{object.account_type}}</th>
+            </tr><tr>
+                <td>City</td>
+                <th>{{object.city}}</th>
+                <td>Address</td>
+                <th>{{object.address}}</th>
+            </tr><tr>
+                <td>Email</td>
+                <th>{{object.user.email}}</th>
+                <td>Date Created</td>
+                <th>{{object.date_created}}</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer text-muted">
+        Banking
+      </div>
+    </div>
+{% endblock %}

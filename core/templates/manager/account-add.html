@@ -1,0 +1,102 @@
+{% extends 'manager/manager-base.html' %}
+{% block title %}Add Account{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card w-100 text-center shadowBlue">
+      <div class="card-header">
+       New Account Forum
+      </div>
+      <div class="card-body bg-dark text-white">
+        <table class="table">
+          <tbody>
+            <tr>
+              <form method="POST">
+                {% csrf_token %}
+                {{form.errors|default:''}}
+              <th>First Name</th>
+              <td><input type="text" name="first_name" value="{{form.first_name.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.first_name.errors|default:""}}</span></td>
+              <th>Last Name</th>
+              <td><input type="text" name="last_name" value="{{form.last_name.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.last_name.errors|default:""}}</span></td>
+            </tr>
+            <tr>
+                <th>Other Names</th>
+                <td><input type="text" name="middle_name" value="{{form.middle_name.value|default:''}}" class="form-control input-sm"><br><span class="text-danger error-text">{{form.middle_name.errors|default:""}}</span></td>
+                <th>Account Type</th>
+                <td>
+                  <select class="form-control input-sm" name="account_type" required>
+                    <option value="savings" {% if form.account_type.value == "savings" %}selected{% endif %}>Savings</option>
+                    <option value="current" {% if form.account_type.value == "current" %}selected{% endif %}>Current</option>
+                  </select><br><span class="text-danger error-text">{{form.account_type.errors|default:""}}</span>
+                </td>
+              </tr>
+            <tr>
+              <th>City</th>
+              <td><input type="text" name="city" value="{{form.city.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.city.errors|default:""}}</span></td>
+              <th>Address</th>
+              <td><input type="text" name="address" value="{{form.address.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.address.errors|default:""}}</span></td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td><input type="email" name="email" value="{{form.email.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.email.errors|default:""}}</span></td>
+              <th>Password</th>
+              <td><input type="password" value="{{form.password.value|default:''}}" name="password" minlength="8" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.password.errors|default:""}}</span></td>
+            </tr>
+            <tr>
+              <th>Deposit</th>
+              <td><input type="number" name="balance" min="500" value="{{form.balance.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.balance.errors|default:""}}</span></td>
+            </tr>
+            <tr>
+              <th>Contact Number</th>
+              <td><input type="number" name="contact" value="{{form.contact.value|default:''}}"  class="form-control input-sm" required><br><span class="text-danger error-text">{{form.contact.errors|default:""}}</span></td>
+              <th>Branch</th>
+              <td>
+                <select name="branch" required class="form-control input-sm">
+                  <option selected value="">Please Select..</option>
+                  {% for branch in branches %}
+                  <option value="{{branch.id}}" {% if form.branch.value == branch.id %}selected{% endif %}>{{branch.name}}</option>
+                  {% endfor %}
+                </select><br><span class="text-danger error-text">{{form.branch.errors|default:""}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <button type="submit" name="saveAccount" class="btn btn-primary btn-sm">Save Account</button>
+                <button type="Reset" class="btn btn-secondary btn-sm">Reset</button></form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+    
+      </div>
+      <div class="card-footer text-muted">
+        Banking
+      </div>
+    </div>
+    
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New Cashier Account</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+           <form method="POST">
+              Enter Details
+             <input class="form-control w-75 mx-auto" type="email" name="email" required placeholder="Email">
+             <input class="form-control w-75 mx-auto" type="password" name="password" required placeholder="Password">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" name="saveAccount" class="btn btn-primary">Save Account</button>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

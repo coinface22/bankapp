@@ -1,0 +1,23 @@
+{% extends 'user/user-base.html' %}
+{% block title %}Account Statement{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card  w-75 mx-auto">
+    <div class="card-header text-center">
+      Transaction made against your account
+    </div>
+    <div class="card-body">
+      <div id="list-group rounded-0">
+        {% for obj in object_list %}
+              
+            <div class='list-group-item alert alert-secondary'>{{obj}}. Date: {{obj.date_created}}.</div>     
+        {% empty %}
+            <div class='text-center'><small class='text-muted'><i>No Transaction has been made yet.</i></small></div>
+        {% endfor %}
+    </div>
+    </div>
+    <div class="card-footer text-muted">
+     Banking
+    </div>
+  </div>
+{% endblock %}

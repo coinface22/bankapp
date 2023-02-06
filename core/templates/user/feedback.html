@@ -1,0 +1,25 @@
+{% extends 'user/user-base.html' %}
+{% block content %}
+<div class="container">
+    <div class="card  w-75 mx-auto">
+    <div class="card-header text-center">
+      Send Message
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="alert alert-success w-50 mx-auto">
+              <h5>Enter your message</h5>
+              <textarea class="form-control" name="message" required placeholder="Write your message"></textarea>
+              <button type="submit" name="send" class="btn btn-primary btn-block btn-sm my-1">Send</button>
+            </div>
+        </form>
+        
+    </div>
+    <div class="card-footer text-muted">
+     banking
+    </div>
+  </div>
+  
+  </div>
+{% endblock %}
