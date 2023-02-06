@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--bn0r^2=6(r4=)g+36o)&9ifxm%yc3p1ini)t_@*&&2id-r4l#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["bankapp.up.railway.app","localhost","127.0.0.1","www.bankapp.up.railway.app","bankapp-wmqq.onrender.com","www.bankapp-wmqq.onrender.com"]
 
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'whitenoise.runserver_nostatic',
     'core.apps.CoreConfig',
 ]
 
@@ -48,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'bankapp.urls'
@@ -122,3 +125,4 @@ LOGIN_REDIRECT_URL = '/login'
 
 STATIC_ROOT = BASE_DIR/'static'
 STATICFILES_DIRS = [BASE_DIR/'core/static']
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
