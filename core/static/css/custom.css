@@ -61,4 +61,24 @@
     display: inline-block;
     font-size: 13px;
     list-style: none;
+    color: rgb(183, 31, 31)!important;
+}
+.alert-error{
+    background-color: rgb(246, 118, 118);
+    color: white;
+}
+.popup-backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    z-index: 3;
+}
+.hidden{
+    display: none;
+}
+.popup-modal{
+    background-color: white;
+    z-index: 4;
 }

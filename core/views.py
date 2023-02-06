@@ -105,13 +105,14 @@ class ManagerStaffListView(ManagerRequiredMixin, ListView):
     def get_queryset(self):
         return User.objects.filter(Q(usertype = "manager")| Q(usertype = "cashier")).exclude(id = self.request.user.id)
     def post(self,request,*args,**kwargs):
-        user_id = request.POST.get("user_id")
+        acc_id = request.POST.get("acc_id")
+        print(acc_id)
         password = request.POST.get("password")
         user = User.objects.get(id = self.request.user.id)
         if not user.check_password(password):
             messages.error(self.request,"Password is Incorrect")
             return redirect(reverse("manager-staff-list"))
-        account = User.objects.filter(id = user_id)
+        account = User.objects.filter(id = int(acc_id))
         if not account.exists():
             messages.error(self.request,"Staff Does not exist")
             return redirect(reverse("manager-staff-list"))
