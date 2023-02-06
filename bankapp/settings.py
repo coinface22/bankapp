@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--bn0r^2=6(r4=)g+36o)&9ifxm%yc3p1ini)t_@*&&2id-r4l#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["bankapp.up.railway.app","localhost","127.0.0.1","www.bankapp.up.railway.app","bankapp-wmqq.onrender.com","www.bankapp-wmqq.onrender.com"]
 
