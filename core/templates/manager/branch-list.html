@@ -1,0 +1,136 @@
+{% extends 'manager/manager-base.html' %}
+{% block title %}All Branches{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card w-100 text-center shadowBlue">
+      <div class="card-header">
+        All Branches <button class="btn btn-outline-info btn-sm float-right" data-toggle="modal" data-target="#exampleModal">Add New Branch</button>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Branch Name</th>
+              <th>Branch Number</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for obj in object_list %}
+                <tr>
+                <td>{{obj.name}}</td>
+                <td>{{obj.number}}</td>
+                 <td><a href="javascript:void(0)" class='btn btn-danger btn-sm' data-toggle="modal" data-target="#exampleModal2" onclick="deleteuser('{{obj.id}}')"  title="Delete this staff account">Delete</a></td>
+                </tr>
+            {% empty %}
+            <p class="jumbotron text-center">NO STAFF</p>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer text-muted">
+       Banking
+      </div>
+    </div>
+    
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New Branch</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+           <form method="POST" action="{% url 'manager-branch-add' %}">
+                {% csrf_token %}
+              <div class="form-group">
+                <label for="email" class="control-label">Branch Name</label>
+                <input class="form-control" type="text" name="name" id="email" required placeholder="Branch Name">
+              </div>
+              <div class="form-group">
+                <label for="password" class="control-label">Branch Number</label>
+                <input class="form-control" type="number" name="number" id="password" required placeholder="Branch Number">
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" name="saveAccount" class="btn btn-primary">Add Branch</button>
+          </form>
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+    <!-- Delete Modal -->
+    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel2">Delete Branch</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+              <div class="modal-body">
+                Do you want to delete this branch?
+                <input type="password" name="password" placeholder="Enter Password to Confirm" class="form-control mt-1" required>
+                <input type="hidden" name="acc_id" value="" id="accountId">
+              </div>
+              <div class="modal-footer">
+                
+                  <button type="button" class="btn btn-secondary" >Close</button>
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                
+                
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        
+      </div>
+      <!-- Delete Modal -->
+    <!-- <div>
+        <div class="popup-backdrop hidden" id="popupbackdrop">
+
+       </div>
+       <div class="popup-modal hidden" id="popupbox">
+           <div class="popup-modal-content">
+               <div class="popup-modal-header">
+                 <h5 class="popmodal-title" >Delete Staff Account</h5>
+                 
+               </div>
+               <form method="post">
+                   {% csrf_token %}
+                 <div class="popup-modal-body">
+                   Do you want to delete this staff account?
+                   <input type="password" name="password" placeholder="Enter Password to Confirm" class="form-control mt-1" required>
+                   <input type="hidden" name="acc_id" value="" id="accountId">
+                 </div>
+                 <div class="popup-modal-footer">
+                   
+                     <button type="button" class="btn btn-secondary" >Close</button>
+                     <button type="submit" class="btn btn-danger">Delete</button>
+                   
+                   
+                 </div>
+               </form>
+             </div>
+       </div> -->
+   
+    </div>
+{% endblock %}
+{% block extrascript %}
+<script>
+  function deleteuser(value){
+    document.getElementById("accountId").value = value;
+  }
+</script>
+{% endblock %}

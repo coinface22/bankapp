@@ -8,13 +8,31 @@
     </div>
     <div class="card-body">
       <div id="list-group rounded-0">
-        {% for obj in object_list %}
-              
-            <div class='list-group-item alert alert-secondary'>{{obj}}. Date: {{obj.date_created}}.</div>     
-        {% empty %}
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Description</th>
+              <th scope="col">Type</th>
+              <th scope="col">Date / Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for obj in object_list %}
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>{{obj.amount}}</td>
+              <td>{{obj.description}}</td>
+              <td>{{obj.get_type|default:"transfer"}}</td>
+              <td>{{obj.date_created}}</td>
+            </tr>
+            {% empty %}
             <div class='text-center'><small class='text-muted'><i>No Transaction has been made yet.</i></small></div>
-        {% endfor %}
-    </div>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="card-footer text-muted">
      Banking

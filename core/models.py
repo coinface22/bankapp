@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 import random
 
 # Create your models here.
@@ -70,16 +71,38 @@ class Branch(models.Model):
 
 class Account(models.Model):
     user = models.OneToOneField(User,on_delete= models.CASCADE)
+
+    # Account information
     account_number = models.CharField(max_length = 10,unique = True,validators=[numeric_validation])
     balance = models.BigIntegerField()
     branch  = models.ForeignKey(Branch,null = True,blank=True,on_delete=models.SET_NULL)
     account_type = models.CharField(max_length = 10, choices = (('current','current'),('savings','savings')),default = "savings")
+    
+    # Personal Information
     first_name = models.CharField(max_length = 256)
     middle_name = models.CharField(max_length = 256, blank = True)
     last_name = models.CharField(max_length = 256)
+    dob = models.DateField(blank=True,null = True)
+    gender = models.CharField(max_length= 2, choices=(('m',"male"),('f',"female")), blank=True)
     city = models.CharField(max_length= 20, blank=True)
+    religion = models.CharField(max_length= 20, blank=True)
+    marital_status = models.CharField(max_length= 2, choices=(('s',"Single"),('m',"Married")), blank=True)
     address = models.CharField(max_length= 40, blank=True)
     contact = models.CharField(max_length=12,blank=True, validators=[numeric_validation])
+
+    # Means of Identity
+    means_of_id = models.CharField(max_length = 10, choices = (('nid','national id card'),('dl','driver licence'),('vc','Voters Card'),
+    ('ip','International Passport')), blank=True)
+    id_number = models.CharField(max_length= 20, blank=True)
+    id_expiry_date = models.DateField(blank=True,auto_now_add=False)
+
+    # Next of Kin
+    next_of_kin_title = models.CharField(max_length= 256, blank=True)
+    next_of_kin_name = models.CharField(max_length= 256, blank=True)
+    next_of_kin_email = models.EmailField(blank=True)
+    next_of_kin_dob = models.DateField(blank=True, auto_now_add=False)
+    next_of_kin_contact = models.CharField(max_length= 12, blank=True)
+    
     date_created = models.DateTimeField(auto_now_add = True)
 
     def __str__(self):
@@ -98,30 +121,38 @@ class Account(models.Model):
 class Transfer(models.Model):
     sent_from = models.ForeignKey(Account,related_name = "transfers",on_delete=models.CASCADE)
     sent_to = models.ForeignKey(Account,related_name = "receives",on_delete=models.CASCADE)
+    description = models.CharField(max_length=200, blank = True)
     amount = models.BigIntegerField()
     date_created =models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'Transfer made by {self.sent_from} to {self.sent_to}; Amount- {self.amount}'
 
+    
+
 class Deposit(models.Model):
     amount = models.PositiveBigIntegerField()
     account = models.ForeignKey(Account,on_delete=models.CASCADE)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=200, blank = True)
     status = models.CharField(max_length=10, choices=(("pending","pending"),("success","success")),default="pending")
-    date_created = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"Deposit made to {self.account.user.email}; Amount - {self.amount}"
     class Meta:
         ordering= ("status","date_created")
+    def get_type(self):
+        return "deposit"
 
 class Withdraw(models.Model):
     amount = models.BigIntegerField()
     account = models.ForeignKey(Account,on_delete=models.CASCADE)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=200,blank=True)
     status = models.CharField(max_length=10, choices=(("pending","pending"),("success","success")),default="pending")
-    date_created = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateTimeField(default=timezone.now)
+
+    def get_type(self):
+        return "withdraw"
     class Meta:
         ordering= ("status","date_created")
     def __str__(self):
@@ -138,4 +169,24 @@ class Feedback(models.Model):
     message = models.CharField(max_length=200)
     date_created = models.DateTimeField(auto_now_add=True)
     
+class BlockedTransfer(models.Model):
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
+    message = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.account.user.email +"--"+self.message
+
+class OtherAccount(models.Model):
+    # Account information
+    account_number = models.CharField(max_length = 10,unique = True,validators=[numeric_validation])
+    balance = models.BigIntegerField()
+    bank = models.CharField(max_length=100)
+    account_type = models.CharField(max_length = 10, choices = (('current','current'),('savings','savings')),default = "savings")
+    
+    # Personal Information
+    first_name = models.CharField(max_length = 256)
+    middle_name = models.CharField(max_length = 256, blank = True)
+    last_name = models.CharField(max_length = 256)
+
+    def __str__(self):
+        return self.first_name +" Accounts"

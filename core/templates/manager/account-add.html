@@ -13,15 +13,15 @@
               <form method="POST">
                 {% csrf_token %}
                 {{form.errors|default:''}}
-              <th>First Name</th>
+              <th>First Name*</th>
               <td><input type="text" name="first_name" value="{{form.first_name.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.first_name.errors|default:""}}</span></td>
-              <th>Last Name</th>
+              <th>Last Name*</th>
               <td><input type="text" name="last_name" value="{{form.last_name.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.last_name.errors|default:""}}</span></td>
             </tr>
             <tr>
                 <th>Other Names</th>
                 <td><input type="text" name="middle_name" value="{{form.middle_name.value|default:''}}" class="form-control input-sm"><br><span class="text-danger error-text">{{form.middle_name.errors|default:""}}</span></td>
-                <th>Account Type</th>
+                <th>Account Type*</th>
                 <td>
                   <select class="form-control input-sm" name="account_type" required>
                     <option value="savings" {% if form.account_type.value == "savings" %}selected{% endif %}>Savings</option>
@@ -30,25 +30,27 @@
                 </td>
               </tr>
             <tr>
-              <th>City</th>
+              <th>City*</th>
               <td><input type="text" name="city" value="{{form.city.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.city.errors|default:""}}</span></td>
-              <th>Address</th>
+              <th>Address*</th>
               <td><input type="text" name="address" value="{{form.address.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.address.errors|default:""}}</span></td>
             </tr>
             <tr>
-              <th>Email</th>
+              <th>Email*</th>
               <td><input type="email" name="email" value="{{form.email.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.email.errors|default:""}}</span></td>
-              <th>Password</th>
+              <th>Password*</th>
               <td><input type="password" value="{{form.password.value|default:''}}" name="password" minlength="8" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.password.errors|default:""}}</span></td>
             </tr>
             <tr>
-              <th>Deposit</th>
+              <th>Deposit*</th>
               <td><input type="number" name="balance" min="500" value="{{form.balance.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.balance.errors|default:""}}</span></td>
+              <th>Religion</th>
+              <td><input type="number" name="religion" min="500" value="{{form.religion.value|default:''}}" class="form-control input-sm" ><br><span class="text-danger error-text">{{form.religion.errors|default:""}}</span></td>
             </tr>
             <tr>
-              <th>Contact Number</th>
+              <th>Contact Number*</th>
               <td><input type="number" name="contact" value="{{form.contact.value|default:''}}"  class="form-control input-sm" required><br><span class="text-danger error-text">{{form.contact.errors|default:""}}</span></td>
-              <th>Branch</th>
+              <th>Branch*</th>
               <td>
                 <select name="branch" required class="form-control input-sm">
                   <option selected value="">Please Select..</option>
@@ -58,6 +60,79 @@
                 </select><br><span class="text-danger error-text">{{form.branch.errors|default:""}}</span>
               </td>
             </tr>
+            <tr>
+              <th>Gender*</th>
+              <td>
+                <select name="gender" required class="form-control input-sm">
+                  <option selected value="">Please Select..</option>
+                  <option value="m">Male</option>
+                  <option value="f">Female</option>
+                </select><br><span class="text-danger error-text">{{form.gender.errors|default:""}}</span>
+              </td>
+              <th>Marital Status*</th>
+              <td>
+                <select name="marital_status" required class="form-control input-sm">
+                  <option selected value="">Please Select..</option>
+                  <option value="s">Single</option>
+                  <option value="m">Married</option>
+                </select><br><span class="text-danger error-text">{{form.marital_status.errors|default:""}}</span>
+              </td>
+            </tr>
+            <tr>
+              <th>Date of Birth*</th>
+              <td>
+                <input type="date" required class="form-control input-sm" name="dob">
+                <br><span class="text-danger error-text">{{form.dob.errors|default:""}}</span>
+              </td>
+              <th>Means of Identification</th>
+              <td>
+                <select name="means_of_id" class="form-control input-sm">
+                  <option selected value="">Please Select..</option>
+                  <option value="nid">National Identity Card</option>
+                  <option value="dl">Drivers Licence</option>
+                  <option value="vc">Voters Card </option>
+                  <option value="dl">Drivers Licence</option>
+                </select><br><span class="text-danger error-text">{{form.means_of_id.errors|default:""}}</span>
+              </td>
+            </tr>
+            <tr>
+                <th>Id Expiry Date</th>
+                <td>
+                  <input type="date" class="form-control input-sm" name="id_expiry_date">
+                  <br><span class="text-danger error-text">{{form.id_expiry_date.errors|default:""}}</span>
+                </td>
+                <th>Id Number</th>
+              <td><input type="number" name="id_number" value="{{form.id_number.value|default:''}}"  class="form-control input-sm">
+              <br><span class="text-danger error-text">{{form.id_number.errors|default:""}}</span></td>
+            </tr>
+              <tr>
+                <th>Next of Kin Title</th>
+                <td>
+                  <input type="text" class="form-control input-sm" name="next_of_kin_title" value="{{form.next_of_kin_name.value|default:''}}">
+                  <br><span class="text-danger error-text">{{form.next_of_kin_title.errors|default:""}}</span>
+                </td>
+                <th>Next of Kin Full Name</th>
+              <td><input type="text" name="next_of_kin_name" value="{{form.next_of_kin_name.value|default:''}}"  class="form-control input-sm">
+              <br><span class="text-danger error-text">{{form.next_of_kin_name.errors|default:""}}</span></td>
+              </tr>
+              <tr>
+                <th>Next of Kin Date of Birth</th>
+                <td>
+                  <input type="date" class="form-control input-sm" name="next_of_kin_dob" value="{{form.next_of_kin_dob.value|default:''}}">
+                  <br><span class="text-danger error-text">{{form.next_of_kin_dob.errors|default:""}}</span>
+                </td>
+                <th>Next of Kin Email</th>
+              <td><input type="email" name="next_of_kin_email" value="{{form.next_of_kin_email.value|default:''}}"  class="form-control input-sm">
+              <br><span class="text-danger error-text">{{form.next_of_kin_email.errors|default:""}}</span></td>
+              </tr>
+              <tr>
+                <th>Next of Kin Phone Number</th>
+                <td>
+                  <input type="tel" class="form-control input-sm" name="next_of_kin_contact" value="{{form.next_of_kin_contact.value|default:''}}">
+                  <br><span class="text-danger error-text">{{form.next_of_kin_contact.errors|default:""}}</span>
+                </td>
+                
+              </tr>
             <tr>
               <td colspan="4">
                 <button type="submit" name="saveAccount" class="btn btn-primary btn-sm">Save Account</button>

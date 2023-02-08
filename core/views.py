@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from .models import Deposit,Withdraw,User,Transfer,Branch,Account,Feedback,Notification
+from .models import Deposit,Withdraw,User,Transfer,Branch,Account,Feedback,Notification,BlockedTransfer, OtherAccount
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth import login, logout
 from django.views import View
@@ -25,7 +25,7 @@ class UserRequiredMixin(LoginRequiredMixin,UserPassesTestMixin):
 
 class LoginView(FormView):
     form_class = LoginForm
-    template_name = "login.html"
+    template_name = "admin-login.html"
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -43,14 +43,39 @@ class LoginView(FormView):
             self.success_url = "user"
         login(self.request,user)
         return super().form_valid(form)
+class UserLoginView(FormView):
+    form_class = LoginForm
+    template_name = "login.html"
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+    
+
+    def form_valid(self, form):
+        user = form.get_user()
+        if user.usertype == "manager":
+            self.success_url = "/manager"
+        elif user.usertype == "cashier":
+            self.success_url = "/cashier"
+        else:
+            self.success_url = "/user"
+        login(self.request,user)
+        return super().form_valid(form)
 
 def index(request):
-    return redirect(reverse("login"))
+    return redirect(reverse("user-login"))
 class LogoutView(LoginRequiredMixin,View):
     def get(self,request):
         logout(request)
         messages.success(request,"Logout SuccessFul")
         return redirect(reverse("login"))
+class UserLogoutView(LoginRequiredMixin,View):
+    def get(self,request):
+        logout(request)
+        messages.success(request,"Logout SuccessFul")
+        return redirect(reverse("user-login"))
 
 class ManagerDashboardView(ManagerRequiredMixin,ListView):
     model = Account
@@ -77,6 +102,30 @@ class ManagerDashboardView(ManagerRequiredMixin,ListView):
 class ManagerAccountDetailView(ManagerRequiredMixin,DetailView):
     model = Account
     template_name = "manager/account-details.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        obj = context['object']
+        if BlockedTransfer.objects.filter(account = obj).exists():
+            blocked = True
+        else:
+            blocked = False
+        context['blocked'] = blocked
+        return context
+    def post(self,request,*args,**kwargs):
+        id = kwargs['pk']
+        account = get_object_or_404(Account, pk = id)
+        message = request.POST.get("message")
+        action = request.POST.get("action")
+        if action == "block":
+            BlockedTransfer.objects.create(account = account,message = message)
+            messages.success(request,"Account Transfer Blocked Successfully")
+        else:
+            if BlockedTransfer.objects.filter(account = account).exists():
+                blockedtf = BlockedTransfer.objects.filter(account = account).first()
+                blockedtf.delete()
+                messages.success(request,"Account Transfer Unblocked Successfully")
+        return redirect(reverse("manager-account-view",kwargs={'pk':id}))
 
 class ManagerAccountAddView(ManagerRequiredMixin,FormView):
     form_class = AccountAddForm
@@ -131,6 +180,39 @@ class ManagerStaffCreateView(ManagerRequiredMixin,View):
         messages.success(request,str(usertype.capitalize())+" Staff Created")
         return redirect(reverse("manager-staff-list"))
 
+class ManagerBranchListView(ManagerRequiredMixin, ListView):
+    model = Branch
+    template_name = "manager/branch-list.html"
+
+    def get_queryset(self):
+        return Branch.objects.all()
+    def post(self,request,*args,**kwargs):
+        branch_id = request.POST.get("branch_id")
+
+        password = request.POST.get("password")
+        user = User.objects.get(id = self.request.user.id)
+        if not user.check_password(password):
+            messages.error(self.request,"Password is Incorrect")
+            return redirect(reverse("manager-branch-list"))
+        account = Branch.objects.filter(id = int(branch_id))
+        if not account.exists():
+            messages.error(self.request,"Branch Does not exist")
+            return redirect(reverse("manager-branch-list"))
+        account = account.first()
+        account.delete()
+        messages.success(request,"Branch Deleted Successfully")
+        return redirect(reverse("manager-branch-list"))
+
+class ManagerBranchCreateView(ManagerRequiredMixin,View):
+    def post(self,request):
+        name = request.POST['name']
+        number = request.POST['number']
+        
+
+        Branch.objects.create(name = name,number = number)
+        messages.success(request,"Branch Created Successfully")
+        return redirect(reverse("manager-branch-list"))
+
 class ManagerNotificationCreateView(ManagerRequiredMixin,View):
     def get(self,request,id):
         user =  get_object_or_404(User, id = id)
@@ -184,26 +266,44 @@ class UserFundTransferView(UserRequiredMixin,View):
             account = Account.objects.filter(account_number = acc_number).exclude(user = user)
             if account.exists():
                 account = account.first()
+                
             else:
-                messages.error(request,"Account number is Invalid")
+                account = OtherAccount.objects.filter(account_number = acc_number)
+                if account.exists():
+                    account = account.first()
+                else:
+                    messages.error(request,"Account number is Invalid")
         else:
             account = None
         return render(request,"user/transfer.html",{'account':account,'transfers':transfers})
     def post(self, request):
         account_id = request.POST.get("account_id")
         transfers = Transfer.objects.filter(sent_from = request.user.account).order_by("-date_created")
-        amount = request.POST.get("amount")
-        account = Account.objects.get(id = account_id)
         useraccount = Account.objects.get(user = request.user)
-        if int(amount) > int(useraccount.balance):
-            messages.error(request,"Insufficient Balnace")
-            return render(request,"user/transfer.html",{'account':account,'transfers':transfers})
-        
-        useraccount.balance = str(int(useraccount.balance) - int(amount))
-        account.balance = str(int(account.balance) + int(amount))
-        Transfer.objects.create(sent_from = request.user.account, sent_to = account, amount = int(amount))
-        account.save()
-        useraccount.save()
+        amount = request.POST.get("amount")
+        try:
+            account = Account.objects.get(id = account_id)
+           
+            blockedtf = BlockedTransfer.objects.filter(account = useraccount)
+            if blockedtf.exists():
+                blockedtf = blockedtf.first()
+                messages.error(request,"Funds transfer blocked -- "+blockedtf.message)
+                return render(request,"user/transfer.html",{'account':account,'transfers':transfers})
+            if int(amount) > int(useraccount.balance):
+                messages.error()
+                return render(request,"user/transfer.html",{'account':account,'transfers':transfers})
+            
+            useraccount.balance = str(int(useraccount.balance) - int(amount))
+            account.balance = str(int(account.balance) + int(amount))
+            Transfer.objects.create(sent_from = request.user.account, sent_to = account, amount = int(amount))
+            account.save()
+            useraccount.save()
+        except Exception:
+            account = OtherAccount.objects.get(id = account_id)
+            useraccount.balance = str(int(useraccount.balance) - int(amount))
+            account.balance = str(int(account.balance) + int(amount))
+            account.save()
+            useraccount.save()
         messages.success(request,"Transfer Successful")
         return redirect(reverse("user-transfer"))
 

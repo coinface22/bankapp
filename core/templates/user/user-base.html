@@ -24,11 +24,11 @@
 
     </ul>
     <form class="form-inline my-2 my-lg-0">
-        <a href="javascript:void(0)" class="btn btn-outline-primary" data-toggle="tooltip" title="Your current Account Balance">Account Balance : {{request.user.account.balance}}</a>  
+        <a href="javascript:void(0)" class="btn btn-outline-primary" data-toggle="tooltip" title="Your current Account Balance">Account Balance : USD {{request.user.account.balance}}</a>  
         <a href="{% url 'user-account' %}" data-toggle="tooltip" title="Account Summary" class="btn btn-outline-info mx-1" ><i class="fa fa-book fa-fw"></i></a> 
         <a href="{% url 'user-notification' %}" data-toggle="tooltip" title="View Notice" class="btn btn-outline-info mx-1" ><i class="fa fa-envelope fa-fw"></i></a> 
         <a href="{% url 'user-feedback' %}" data-toggle="tooltip" title="Help?" class="btn btn-outline-info mx-1" ><i class="fa fa-question fa-fw"></i></a> 
-        <a href="{% url 'logout' %}" data-toggle="tooltip" title="Logout" class="btn btn-outline-danger mx-1" ><i class="fa fa-sign-out fa-fw"></i></a>    
+        <a href="{% url 'user-logout' %}" data-toggle="tooltip" title="Logout" class="btn btn-outline-danger mx-1" ><i class="fa fa-sign-out fa-fw"></i></a>    
     </form>
   </div>
 </nav><br><br><br>

@@ -2,44 +2,159 @@
 {% block title %}Account profile for {{object.first_name}} {{object.last_name}}{% endblock %}
 {% block content %}
 <div class="container">
-    <div class="card w-100 text-center shadowBlue">
+    <div class="card w-100 shadowBlue">
       <div class="card-header">
         Account profile for {{object.first_name}} {{object.last_name}} #{{object.account_number}}
       </div>
       <div class="card-body">
         <table class="table table-bordered">
+          <thead>
+            <tr >
+              <td scope="row">Account Information</td>
+              <td></td>
+            </tr>
+          </thead>
           <tbody>
             <tr>
-              <td>Name</td>
-              <th>{{object.first_name}} {{object.middle_name}} {{object.last_name}}</th>
-              <td>Account No</td>
-              <th>{{object.account_number}}</th>
-            </tr><tr>
-              <td>Branch Name</td>
-              <th>{{object.branch.name}}</th>
-              <td>Branch Code</td>
-              <th>{{object.branch.number}}</th>
-            </tr><tr>
-              <td>Current Balance</td>
-              <th>{{object.balance}}</th>
-              <td>Account Type</td>
-              <th>{{object.account_type}}</th>
-            </tr><tr>
-                <td>City</td>
-                <th>{{object.city}}</th>
-                <td>Address</td>
-                <th>{{object.address}}</th>
-            </tr><tr>
-                <td>Email</td>
-                <th>{{object.user.email}}</th>
-                <td>Date Created</td>
-                <th>{{object.date_created}}</th>
+              <td scope="col">Account No.</td>
+              <th scope="col">{{object.account_number}}</th>
+            </tr>
+            <tr>
+              <th scope="row">Branch</th>
+              <td>{{object.branch.name}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Branch Code</th>
+              <td>{{object.branch.number}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Account Type</th>
+              <td>{{object.account_type}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Date Created</th>
+              <td>{{object.date_created}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Personal Information</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="col">Name</td>
+              <td scope="col">{{object.first_name}} {{object.middle_name}} {{object.lat_name}}</th>
+            </tr>
+            <tr>
+              <th scope="col">Date of Birth</td>
+              <th scope="col">{{object.dob}}</th>
+            </tr>
+            <tr>
+              <th scope="col">Gender</td>
+              <th scope="col">{{object.get_gender_display}}</th>
+            </tr>
+            <tr>
+              <th scope="col">Religion</td>
+              <td scope="col">{{object.Religion}}</th>
+            </tr>
+            <tr>
+              <th scope="col">City</td>
+              <td scope="col">{{object.city}}</th>
+            </tr>
+            <tr>
+              <th scope="col">Address</td>
+              <td scope="col">{{object.address}}</th>
+            </tr>
+            <tr>
+              <th scope="col">Marital Status</td>
+              <td scope="col">{{object.get_marital_status_display}}</th>
+            </tr>
+            <tr>
+              <th scope="col">Contact</td>
+              <td scope="col">{{object.contact}}</th>
+            </tr>
+            <tr>
+              <th scope="row">Means Of Id</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="col">ID Type</td>
+              <td scope="col">{{object.means_of_id}}</th>
+            </tr>
+            <tr>
+              <th scope="col">ID Number</td>
+              <td scope="col">{{object.id_number}}</th>
+            </tr>
+            <tr>
+              <th scope="col">ID Expiry Date</td>
+              <td scope="col">{{object.id_expiry_date}}</th>
+            </tr>
+            <tr>
+              <th scope="row">Next of Kin Information</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="col">Name of Next of Kin</td>
+              <td scope="col">{{object.next_of_kin_name}}</th>
+            </tr>
+            <tr>
+              <th scope="col">Role of Next of Kin</td>
+              <td scope="col">{{object.next_of_kin_title}}</th>
+            </tr>
+            <tr>
+              <th scope="col">Email of Next of Kin</td>
+              <td scope="col">{{object.next_of_kin_email}}</th>
+            </tr>
+            <tr>
+              <th scope="col">Date of Birth of Next of Kin</td>
+              <td scope="col">{{object.next_of_kin_dob}}</th>
+            </tr>
+            <tr>
+              <th scope="col">Contact of Next of Kin</td>
+              <td scope="col">{{object.next_of_kin_contact}}</th>
             </tr>
           </tbody>
         </table>
+        <div>
+          {% if blocked %}
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="unblock">
+            <button class="btn btn-success float-left" >UnBlock Transfer</button>
+          </form>
+          {% else %}
+          <button class="btn btn-danger float-left" data-toggle="modal" data-target="#exampleModal">Block Transfer</button>
+          {% endif %}
+        </div>
       </div>
       <div class="card-footer text-muted">
         Banking
       </div>
+      
     </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Block Transfer</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+           <form method="POST">
+                {% csrf_token %}
+              <div class="form-group">
+                <label for="email" class="control-label">Message</label>
+                <input class="form-control" type="text" name="message"  required placeholder="Message">
+              </div>
+              <input type="hidden" name="action" value="block">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" name="saveAccount" class="btn btn-danger">Block Transfer</button>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}

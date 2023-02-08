@@ -22,7 +22,7 @@
               Account Holder Name.
               <input type='text' class='form-control' value='{{account.first_name}} {{account.last_name}}' readonly required>
               Account Holder Bank Name.
-              <input type='text' class='form-control' value='Banking' readonly required>
+              <input type='text' class='form-control' value='{{account.bank|default:"Banking"}}' readonly required>
               Enter Amount for transfer.
               <input type="hidden" name="account_id" value="{{account.id}}">
               <input type='number' name='amount' class='form-control' min='1' max='{{request.user.account.balance}}' required>

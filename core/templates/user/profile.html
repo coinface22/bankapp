@@ -9,11 +9,16 @@
       <table class="table table-striped table-dark w-75 mx-auto">
     <thead>
       <tr>
+        <th scope="row">Account Information</th>
+        <td></td>
+      </tr>
+      
+    </thead>
+    <tbody>
+      <tr>
         <td scope="col">Account No.</td>
         <th scope="col">{{account.account_number}}</th>
       </tr>
-    </thead>
-    <tbody>
       <tr>
         <th scope="row">Branch</th>
         <td>{{account.branch.name}}</td>
@@ -29,6 +34,74 @@
       <tr>
         <th scope="row">Account Created</th>
         <td>{{account.date_created}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Personal Information</th>
+        <td></td>
+      </tr>
+      <tr>
+        <td scope="col">Name</td>
+        <th scope="col">{{account.first_name}} {{account.middle_name}} {{account.lat_name}}</th>
+      </tr>
+      <tr>
+        <td scope="col">Date of Birth</td>
+        <th scope="col">{{account.dob}}</th>
+      </tr>
+      <tr>
+        <td scope="col">Gender</td>
+        <th scope="col">{{account.get_gender_display}}</th>
+      </tr>
+      <tr>
+        <td scope="col">Religion</td>
+        <th scope="col">{{account.Religion}}</th>
+      </tr>
+      <tr>
+        <td scope="col">City</td>
+        <th scope="col">{{account.city}}</th>
+      </tr>
+      <tr>
+        <td scope="col">Address</td>
+        <th scope="col">{{account.address}}</th>
+      </tr>
+      <tr>
+        <td scope="col">Marital Status</td>
+        <th scope="col">{{account.get_marital_status_display}}</th>
+      </tr>
+      <tr>
+        <td scope="col">Contact</td>
+        <th scope="col">{{account.contact}}</th>
+      </tr>
+      <tr>
+        <th scope="row">Means Of Id</th>
+        <td></td>
+      </tr>
+      <tr>
+        <td scope="col">ID Type</td>
+        <th scope="col">{{account.means_of_id}}</th>
+      </tr>
+      <tr>
+        <th scope="row">Next of Kin Information</th>
+        <td></td>
+      </tr>
+      <tr>
+        <td scope="col">Name of Next of Kin</td>
+        <th scope="col">{{account.next_of_kin_name}}</th>
+      </tr>
+      <tr>
+        <td scope="col">Role of Next of Kin</td>
+        <th scope="col">{{account.next_of_kin_title}}</th>
+      </tr>
+      <tr>
+        <td scope="col">Email of Next of Kin</td>
+        <th scope="col">{{account.next_of_kin_email}}</th>
+      </tr>
+      <tr>
+        <td scope="col">Date of Birth of Next of Kin</td>
+        <th scope="col">{{account.next_of_kin_dob}}</th>
+      </tr>
+      <tr>
+        <td scope="col">Contact of Next of Kin</td>
+        <th scope="col">{{account.next_of_kin_contact}}</th>
       </tr>
     </tbody>
   </table>
