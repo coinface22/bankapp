@@ -4,26 +4,32 @@
 <div class="container">
     <div class="card w-100 text-center shadowBlue">
       <div class="card-header">
-        All Branches <button class="btn btn-outline-info btn-sm float-right" data-toggle="modal" data-target="#exampleModal">Add New Branch</button>
+        Other Accounts <button class="btn btn-outline-info btn-sm float-right" data-toggle="modal" data-target="#exampleModal">Add New Account</button>
       </div>
       <div class="card-body">
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>Branch Name</th>
-              <th>Branch Number</th>
+              <th>Account Name</th>
+              <th>Account Number</th>
+              <th>Bank</th>
+              <th>Account Type</th>
+              <th>Balance</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {% for obj in object_list %}
                 <tr>
-                <td>{{obj.name}}</td>
-                <td>{{obj.number}}</td>
+                <td>{{obj.first_name}} {{obj.last_name}}</td>
+                <td>{{obj.account_number}}</td>
+                <td>{{obj.bank}}</td>
+                <td>{{obj.account_type}}</td>
+                <td>{{obj.balance}}</td>
                  <td><a href="javascript:void(0)" class='btn btn-danger btn-sm' data-toggle="modal" data-target="#exampleModal2" onclick="deleteuser('{{obj.id}}')"  title="Delete this staff account">Delete</a></td>
                 </tr>
             {% empty %}
-            <p class="jumbotron text-center">NO BRANCH</p>
+            <p class="jumbotron text-center">NO Account</p>
             {% endfor %}
           </tbody>
         </table>
@@ -39,26 +45,50 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">New Branch</h5>
+            <h5 class="modal-title" id="exampleModalLabel">New Account</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-           <form method="POST" action="{% url 'manager-branch-add' %}">
+           <form method="POST" action="{% url 'manager-otheraccount-add' %}">
                 {% csrf_token %}
               <div class="form-group">
-                <label for="email" class="control-label">Branch Name</label>
-                <input class="form-control" type="text" name="name" id="email" required placeholder="Branch Name">
+                <label class="control-label">First Name</label>
+                <input class="form-control" type="text" name="first_name"  required placeholder="First Name">
               </div>
               <div class="form-group">
-                <label for="password" class="control-label">Branch Number</label>
-                <input class="form-control" type="number" name="number" id="password" required placeholder="Branch Number">
+                <label class="control-label">Middle Name</label>
+                <input class="form-control" type="text" name="middle_name"  required placeholder="Middle Name">
+              </div>
+              <div class="form-group">
+                <label class="control-label">Last Name</label>
+                <input class="form-control" type="text" name="last_name"  required placeholder="Last Name">
+              </div>
+              <div class="form-group">
+                <label  class="control-label">Account Type</label>
+                <select name="account_type" class="form-control" required>
+                    <option value="">Select an Account Type</option>
+                    <option value="savings">Savings</option>
+                    <option value="current">Current</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label  class="control-label">Account Number</label>
+                <input class="form-control" type="number" name="account_number" minlength="10" maxlength="10"  required placeholder="Account Number">
+              </div>
+              <div class="form-group">
+                <label class="control-label">Bank</label>
+                <input class="form-control" type="text" name="bank"  required placeholder="Bank">
+              </div>
+              <div class="form-group">
+                <label  class="control-label">Deposit</label>
+                <input class="form-control" type="number" name="balance"  required placeholder="Deposit">
               </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" name="saveAccount" class="btn btn-primary">Add Branch</button>
+            <button type="submit" name="saveAccount" class="btn btn-primary">Add Account</button>
           </form>
           </div>
         </div>
@@ -71,7 +101,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel2">Delete Branch</h5>
+              <h5 class="modal-title" id="exampleModalLabel2">Delete Account</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -79,9 +109,9 @@
             <form method="post">
                 {% csrf_token %}
               <div class="modal-body">
-                Do you want to delete this branch?
+                Do you want to delete this account?
                 <input type="password" name="password" placeholder="Enter Password to Confirm" class="form-control mt-1" required>
-                <input type="hidden" name="branch_id" value="" id="accountId">
+                <input type="hidden" name="acc_id" value="" id="accountId">
               </div>
               <div class="modal-footer">
                 

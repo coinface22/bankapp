@@ -213,6 +213,37 @@ class ManagerBranchCreateView(ManagerRequiredMixin,View):
         messages.success(request,"Branch Created Successfully")
         return redirect(reverse("manager-branch-list"))
 
+class ManagerOtherAccountListView(ManagerRequiredMixin, ListView):
+    model = OtherAccount
+    template_name = "manager/other-account-list.html"
+
+    def get_queryset(self):
+        return OtherAccount.objects.all().order_by("-date_created")
+    def post(self,request,*args,**kwargs):
+        account_id = request.POST.get("acc_id")
+
+        password = request.POST.get("password")
+        user = User.objects.get(id = self.request.user.id)
+        if not user.check_password(password):
+            messages.error(self.request,"Password is Incorrect")
+            return redirect(reverse("manager-otheraccount"))
+        account = OtherAccount.objects.filter(id = int(account_id))
+        if not account.exists():
+            messages.error(self.request,"Account Does not exist")
+            return redirect(reverse("manager-otheraccount"))
+        account = account.first()
+        account.delete()
+        messages.success(request,"Account Deleted Successfully")
+        return redirect(reverse("manager-otheraccount"))
+
+class ManagerOtherAccountCreateView(ManagerRequiredMixin,CreateView):
+    model = OtherAccount
+    fields = "__all__"
+    template_name = "manager/other-account-list.html"
+    success_url = reverse_lazy("manager-otheraccount")
+    
+
+
 class ManagerNotificationCreateView(ManagerRequiredMixin,View):
     def get(self,request,id):
         user =  get_object_or_404(User, id = id)

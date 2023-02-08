@@ -16,6 +16,7 @@
         <a class="nav-link" href="{% url 'manager-index' %}">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item {% if request.path == '/manager/staffs' %}active{% endif %}">  <a class="nav-link" href="{% url 'manager-staff-list' %}">Accounts</a></li>
+      <li class="nav-item {% if request.path == '/manager/otheraccounts' %}active{% endif %}">  <a class="nav-link" href="{% url 'manager-otheraccount' %}">OtherAccounts</a></li>
       <li class="nav-item {% if request.path == '/manager/branches' %}active{% endif %}">  <a class="nav-link" href="{% url 'manager-branch-list' %}">Branches</a></li>
       <li class="nav-item {% if request.path == '/manager/account/add' %}active{% endif %}">  <a class="nav-link" href="{% url 'manager-account-add' %}">Add New Account</a></li>
       <li class="nav-item {% if request.path == '/manager/feedbacks' %}active{% endif %}">  <a class="nav-link" href="{% url 'manager-feedbacks' %}">Feedback</a></li>

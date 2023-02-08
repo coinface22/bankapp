@@ -188,5 +188,7 @@ class OtherAccount(models.Model):
     middle_name = models.CharField(max_length = 256, blank = True)
     last_name = models.CharField(max_length = 256)
 
+    date_created = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.first_name +" Accounts"
