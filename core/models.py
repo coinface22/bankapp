@@ -94,13 +94,13 @@ class Account(models.Model):
     means_of_id = models.CharField(max_length = 10, choices = (('nid','national id card'),('dl','driver licence'),('vc','Voters Card'),
     ('ip','International Passport')), blank=True)
     id_number = models.CharField(max_length= 20, blank=True)
-    id_expiry_date = models.DateField(blank=True,auto_now_add=False)
+    id_expiry_date = models.DateField(blank=True,auto_now_add=False,null=True)
 
     # Next of Kin
     next_of_kin_title = models.CharField(max_length= 256, blank=True)
     next_of_kin_name = models.CharField(max_length= 256, blank=True)
     next_of_kin_email = models.EmailField(blank=True)
-    next_of_kin_dob = models.DateField(blank=True, auto_now_add=False)
+    next_of_kin_dob = models.DateField(blank=True, auto_now_add=False,null=True)
     next_of_kin_contact = models.CharField(max_length= 12, blank=True)
     
     date_created = models.DateTimeField(auto_now_add = True)
@@ -121,6 +121,7 @@ class Account(models.Model):
 class Transfer(models.Model):
     sent_from = models.ForeignKey(Account,related_name = "transfers",on_delete=models.CASCADE)
     sent_to = models.ForeignKey(Account,related_name = "receives",on_delete=models.CASCADE)
+    account_number = models.CharField(max_length = 12, null= True, blank=True)
     description = models.CharField(max_length=200, blank = True)
     amount = models.BigIntegerField()
     date_created =models.DateTimeField(auto_now_add=True)

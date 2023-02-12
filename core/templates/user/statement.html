@@ -22,7 +22,7 @@
             {% for obj in object_list %}
             <tr>
               <th scope="row">{{forloop.counter}}</th>
-              <td>{{obj.amount}}</td>
+              <td>{% if obj.sent_from.user == request.user or obj.get_type == "withdraw" %}-{% else %}{% endif %}{{obj.amount}}.00</td>
               <td>{{obj.description}}</td>
               <td>{{obj.get_type|default:"transfer"}}</td>
               <td>{{obj.date_created}}</td>

@@ -1,10 +1,10 @@
 {% extends 'manager/manager-base.html' %}
-{% block title %}Add Account{% endblock %}
+{% block title %}Edit Account{% endblock %}
 {% block content %}
 <div class="container">
     <div class="card w-100 text-center shadowBlue">
       <div class="card-header">
-       New Account Forum
+       Edit Account Forum
       </div>
       <div class="card-body bg-dark text-white">
         <table class="table">
@@ -13,6 +13,9 @@
               <form method="POST">
                 {% csrf_token %}
                 <div class="error-text">{{form.non_field_errors|default:""}}</div>
+                <p>{{form.errors}}</p>
+                <input type="hidden" name="user" value="{{form.user.value}}">
+                <input type="hidden" name="account_number" value="{{form.account_number.value}}">
               <th>First Name*</th>
               <td><input type="text" name="first_name" value="{{form.first_name.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.first_name.errors|default:""}}</span></td>
               <th>Last Name*</th>
@@ -37,13 +40,13 @@
             </tr>
             <tr>
               <th>Email*</th>
-              <td><input type="email" name="email" value="{{form.email.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.email.errors|default:""}}</span></td>
-              <th>Password*</th>
-              <td><input type="password" value="{{form.password.value|default:''}}" name="password" minlength="8" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.password.errors|default:""}}</span></td>
+              <td><input type="email" name="email" value="{{email|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.email.errors|default:""}}</span></td>
+              <th>Password</th>
+              <td><input type="password" value="{{form.password.value|default:''}}" name="password" minlength="8" class="form-control input-sm" ><br><span class="text-danger error-text">{{form.password.errors|default:""}}</span></td>
             </tr>
             <tr>
-              <th>Deposit*</th>
-              <td><input type="number" name="balance" min="500" value="{{form.balance.value|default:''}}" class="form-control input-sm" required><br><span class="text-danger error-text">{{form.balance.errors|default:""}}</span></td>
+              <th>Balance*</th>
+              <td><input type="number" name="balance" min="500" value="{{form.balance.value|default:''}}" class="form-control input-sm" required readonly><br><span class="text-danger error-text">{{form.balance.errors|default:""}}</span></td>
               <th>Religion</th>
               <td><input type="text" name="religion" value="{{form.religion.value|default:''}}" class="form-control input-sm" ><br><span class="text-danger error-text">{{form.religion.errors|default:""}}</span></td>
             </tr>
@@ -91,6 +94,7 @@
                   <option value="nid" {% if form.means_of_id.value == "nid" %}selected{% endif %}>National Identity Card</option>
                   <option value="dl" {% if form.means_of_id.value == "dl" %}selected{% endif %}>Drivers Licence</option>
                   <option value="vc" {% if form.means_of_id.value == "vc" %}selected{% endif %}>Voters Card </option>
+      
                 </select><br><span class="text-danger error-text">{{form.means_of_id.errors|default:""}}</span>
               </td>
             </tr>
@@ -173,4 +177,9 @@
         </div>
       </div>
     </div>
+{% endblock %}
+{% block extrascript %}
+<script>
+  document.getElementById("dob").valueAsDate = new Date("{{form.dob.value}}")
+</script>
 {% endblock %}

@@ -39,6 +39,7 @@
                       <input type='hidden' value='{{account.account_number}}' name='acc_no' class='form-control ' required>
                       <input type='hidden' value='withdraw' name='transaction_type' class='form-control ' required>
                       <Textarea placeholder="Description" name="description" class="form-control my-1"></Textarea>
+                      <input type='date' class='form-control my-1' name='date_created' id="withdraw-date" placeholder='Date of Deposit'  >
                       <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount for withdraw' max='{{account.balance}}' required>
                      <button type='submit' name='withdraw' class='btn btn-primary btn-bloc btn-sm my-1'> Withdraw</button>
                     </form>
@@ -47,6 +48,7 @@
                         <input type='hidden' value='{{account.account_number}}' name='acc_no' class='form-control ' required>
                       <input type='hidden' value='deposit' name='transaction_type' class='form-control ' required> 
                       <Textarea placeholder="Description" name="description" class="form-control my-1"></Textarea>
+                      <input type='date' class='form-control my-1' name='date_created' id="deposit-date" placeholder='Date of Deposit'  >
                       <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount for deposit'  required>
                      <button type='submit' name='deposit' class='btn btn-success btn-bloc btn-sm my-1'> Deposit</button></form>
                     </div>
@@ -61,4 +63,10 @@
     </div>
     
   </div>
+{% endblock %}
+{% block extrascript %}
+<script>
+  document.getElementById("withdraw-date").valueAsDate = new Date();
+  document.getElementById("deposit-date").valueAsDate = new Date();
+</script>
 {% endblock %}

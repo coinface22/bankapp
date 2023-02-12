@@ -26,6 +26,8 @@
               Enter Amount for transfer.
               <input type="hidden" name="account_id" value="{{account.id}}">
               <input type='number' name='amount' class='form-control' min='1' max='{{request.user.account.balance}}' required>
+              Narration.
+              <textarea name="description" class="form-control input-sm" rows="3" ></textarea>
               <button type='submit' name='transfer' class='btn btn-primary btn-bloc btn-sm my-1'>Transfer</button>
             </form>
           </div>
@@ -34,11 +36,30 @@
       <br>
       <h5>Transfer History</h5>
       <div id="list-group rounded-0">
-        {% for transfer in transfers %}
-        <div class='list-group-item list-group-item-action bg-gradient-info'>Transfer have been made for {{transfer.amount}} from your account at {{transfer.date_created}} in  account no. {{transfer.sent_to.account_number}}</div>
-        {% empty %}
-        <div class='list-group-item list-group-item-action text-muted'>You have made no transfer yet.</div>
-        {% endfor %}
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Description</th>
+              <th scope="col">Type</th>
+              <th scope="col">Date / Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for obj in transfers %}
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>{% if obj.sent_from.user == request.user %}-{% endif %}{{obj.amount}}.00</td>
+              <td>{{obj.description}}</td>
+              <td>{{obj.get_type|default:"transfer"}}</td>
+              <td>{{obj.date_created}}</td>
+            </tr>
+            {% empty %}
+            <div class='text-center'><small class='text-muted'><i>No Transfer has been made yet.</i></small></div>
+          {% endfor %}
+          </tbody>
+        </table>
       </div> 
     </div>
     <div class="card-footer text-muted">

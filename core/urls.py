@@ -11,11 +11,12 @@ urlpatterns = [
     path('manager/otheraccounts',ManagerOtherAccountListView.as_view(),name="manager-otheraccount"),
     path('manager/otheraccounts/add',ManagerOtherAccountCreateView.as_view(),name="manager-otheraccount-add"),
     path('manager/account/add',ManagerAccountAddView.as_view(),name="manager-account-add"),
+    path('manager/account/<int:pk>',ManagerAccountDetailView.as_view(),name="manager-account-view"),
+    path('manager/account/<int:pk>/edit',ManagerAccountEditView.as_view(),name="manager-account-edit"),
     path('manager/staffs',ManagerStaffListView.as_view(),name="manager-staff-list"),
     path('manager/staffs/add',ManagerStaffCreateView.as_view(),name="manager-staff-add"),
     path('manager/branches',ManagerBranchListView.as_view(),name="manager-branch-list"),
     path('manager/branches/add',ManagerBranchCreateView.as_view(),name="manager-branch-add"),
-    path('manager/account/<int:pk>',ManagerAccountDetailView.as_view(),name="manager-account-view"),
     path('manager/<int:id>/notice',ManagerNotificationCreateView.as_view(),name="manager-notice-add"),
     path('manager/feedbacks',ManagerFeedbackListView.as_view(),name="manager-feedbacks"),
 

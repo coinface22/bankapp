@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
-from .models import Account
+from .models import Account, User
 from django.conf import settings
 
 class LoginForm(forms.Form):
@@ -32,3 +32,22 @@ class AccountAddForm(forms.ModelForm):
     class Meta:
         model = Account
         exclude = ['user','date_created','account_number']
+    def clean(self):
+        email = self.cleaned_data.get("email")
+        if User.objects.filter(email = email).exists():
+            raise forms.ValidationError("Email already exists")
+        
+        return super().clean()
+
+class AccountEditForm(forms.ModelForm):
+    email = forms.EmailField(required=False)
+    password = forms.CharField(required=False)
+    class Meta:
+        model = Account
+        exclude = ['user','date_created','account_number']
+    def clean(self):
+        email = self.cleaned_data.get("email")
+        if User.objects.filter(email = email).exists():
+            raise forms.ValidationError("Email already exists")
+        
+        return super().clean()

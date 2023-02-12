@@ -4,10 +4,11 @@ from .models import Deposit,Withdraw,User,Transfer,Branch,Account,Feedback,Notif
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth import login, logout
 from django.views import View
-from django.views.generic import FormView, ListView, DetailView, CreateView
+from django.views.generic import FormView, ListView, DetailView, CreateView, UpdateView
 from .forms import LoginForm, AccountAddForm
 from django.db.models import Q
 from django.contrib import messages
+from django import forms as django_form
 # Create your views here.
 
 
@@ -145,6 +146,49 @@ class ManagerAccountAddView(ManagerRequiredMixin,FormView):
         obj.user = user
         obj.save()
         messages.success(self.request,"Account Created Successfully")
+        return super().form_valid(form)
+
+class ManagerAccountEditView(ManagerRequiredMixin,UpdateView):
+    model = Account
+    template_name = "manager/account-edit.html"
+    success_url = reverse_lazy("manager-index")
+    fields = "__all__"
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        obj = self.get_object()
+        context['email'] = obj.user.email
+        context['branches'] = Branch.objects.all().order_by("name")
+        return context
+    def post(self, request, *args: str, **kwargs):
+        obj = self.get_object()
+        emails =  User.objects.all().exclude(email = obj.user.email).values_list("email", flat=True)
+        print(emails)
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user = User.objects.get(email = obj.user.email)
+        if email != obj.user.email:
+            if email in emails:
+                messages.error(request,"Another User already has this email")
+                return redirect(reverse("manager-account-edit",kwargs={'pk':obj.id}))
+            else:
+                
+                user.email = email
+                if password:
+                    user.set_password(password)
+                user.save()
+        else:
+            if password:
+                if not user.check_password(password):
+                    user.set_password(password)
+                    user.save()
+                    
+        
+        self.success_url = reverse("manager-account-view",kwargs={'pk':obj.id})
+        messages.success(self.request,"Account Updated Successfully")
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
         return super().form_valid(form)
 
 class ManagerStaffListView(ManagerRequiredMixin, ListView):
@@ -312,6 +356,7 @@ class UserFundTransferView(UserRequiredMixin,View):
         transfers = Transfer.objects.filter(sent_from = request.user.account).order_by("-date_created")
         useraccount = Account.objects.get(user = request.user)
         amount = request.POST.get("amount")
+        description = request.POST.get("description")
         try:
             account = Account.objects.get(id = account_id)
            
@@ -326,7 +371,7 @@ class UserFundTransferView(UserRequiredMixin,View):
             
             useraccount.balance = str(int(useraccount.balance) - int(amount))
             account.balance = str(int(account.balance) + int(amount))
-            Transfer.objects.create(sent_from = request.user.account, sent_to = account, amount = int(amount))
+            Transfer.objects.create(sent_from = request.user.account, sent_to = account, amount = int(amount), description = description)
             account.save()
             useraccount.save()
         except Exception:
@@ -335,6 +380,7 @@ class UserFundTransferView(UserRequiredMixin,View):
             account.balance = str(int(account.balance) + int(amount))
             account.save()
             useraccount.save()
+            Transfer.objects.create(account_number = account.account_number, sent_from = request.user.account, amount = int(amount), description = description)
         messages.success(request,"Transfer Successful")
         return redirect(reverse("user-transfer"))
 
