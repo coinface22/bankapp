@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}login{% endblock %}
 {% block body %}
 {% for message in messages %}
   <div class="message-box">
@@ -17,7 +18,7 @@
   <div class="form-box">
     <div class="card">
     <div class="card-header text-center" style="font-weight: bold;">
-      <h2>User Login</h2>
+      <h2>Login</h2>
     </div>
     <div class="card-body">
       <div style="font-size: 14px; color: rgb(188, 21, 21); text-align: center;" class="error-text">{{form.non_field_errors|default:""}}</div>

@@ -119,8 +119,8 @@ class Account(models.Model):
         return super().save(*args,**kwargs)
     
 class Transfer(models.Model):
-    sent_from = models.ForeignKey(Account,related_name = "transfers",on_delete=models.CASCADE)
-    sent_to = models.ForeignKey(Account,related_name = "receives",on_delete=models.CASCADE)
+    sent_from = models.ForeignKey(Account,related_name = "transfers", null = True, blank = True,on_delete=models.CASCADE)
+    sent_to = models.ForeignKey(Account,related_name = "receives",null = True, blank = True,on_delete=models.CASCADE)
     account_number = models.CharField(max_length = 12, null= True, blank=True)
     description = models.CharField(max_length=200, blank = True)
     amount = models.BigIntegerField()

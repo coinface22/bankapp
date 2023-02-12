@@ -142,6 +142,8 @@ class ManagerAccountAddView(ManagerRequiredMixin,FormView):
         email = form.cleaned_data.get("email")
         password = form.cleaned_data.get("password")
         user = User.objects.create(email = email, password = password)
+        user.set_password(password)
+        user.save()
         obj = form.save(commit = False)
         obj.user = user
         obj.save()
@@ -220,7 +222,9 @@ class ManagerStaffCreateView(ManagerRequiredMixin,View):
         password = request.POST['password']
         usertype = "cashier"
 
-        User.objects.create(email = email,password = password, usertype = usertype)
+        user = User.objects.create(email = email,password = password, usertype = usertype)
+        user.set_password(password)
+        user.save()
         messages.success(request,str(usertype.capitalize())+" Staff Created")
         return redirect(reverse("manager-staff-list"))
 
