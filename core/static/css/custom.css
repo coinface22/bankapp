@@ -116,8 +116,23 @@
 .form-box .card{
     width: 40%;
 }
+.responsive-width{
+    width: 75%;
+}
+.overflow-auto{
+    overflow-x: auto;
+}
 @media screen and (max-width: 600px){
     .form-box .card{
         width: 90%;
+    }
+    .responsive-width{
+        width: 100%;
+    }
+    .responsive-margin-bottom{
+        margin-bottom: 20px;
+    }
+    .margin-bottom-mobile{
+        margin-bottom: 10px;
     }
 }

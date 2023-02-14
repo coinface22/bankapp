@@ -1,13 +1,13 @@
 {% extends 'user/user-base.html' %}
 {% block content %}
 <div class="container">
-    <div class="card  w-75 mx-auto">
+    <div class="card responsive-width mx-auto">
     <div class="card-header text-center">
       Funds Transfer
     </div>
-    <div class="card-body">
+    <div class="card-body overflow-auto">
         <form method="get">
-            <div class="alert alert-success w-50 mx-auto">
+            <div class="alert alert-success responsive-width mx-auto">
               <h5>New Transfer</h5>
               <input type="text" name="acc_no" class="form-control " placeholder="Enter Receiver Account number" required>
               <button type="submit" class="btn btn-primary btn-bloc btn-sm my-1">Get Account Info</button>

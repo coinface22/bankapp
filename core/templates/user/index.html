@@ -1,7 +1,7 @@
 {% extends 'user/user-base.html' %}
 {% load static %}
 {% block content %}
-<div class="row w-100" >
+<div class="row w-100" style="margin-left: 0px;" >
     <div class="col" style="padding: 22px;padding-top: 0">
       <div class="jumbotron shadowBlack" style="padding: 25px;min-height: 241px;max-height: 241px">
     <h4 class="display-5">Welecome to Banking</h4>
@@ -17,7 +17,7 @@
   <div class="col">
       <div class="row" style="padding: 22px;padding-top: 0">
         <div class="col">
-          <div class="card shadowBlack ">
+          <div class="card shadowBlack responsive-margin-bottom">
             <img class="card-img-top" src="{% static 'images/journal.jpg' %}" style="max-height: 155px;min-height: 155px" alt="Card image cap">
             <div class="card-body">
               <a href="{% url 'user-account' %}" class="btn btn-outline-info shadow btn-block">Account Summary</a>
@@ -35,7 +35,7 @@
       </div>
       <div class="row" style="padding: 22px">
         <div class="col">
-          <div class="card shadowBlack ">
+          <div class="card shadowBlack responsive-margin-bottom">
             <img class="card-img-top" src="{% static 'images/notif.gif' %}" style="max-height: 155px;min-height: 155px" alt="Card image cap">
             <div class="card-body">
               <a href="{% url 'user-notification' %}" class="btn btn-outline-primary btn-block">Check Notification</a>
