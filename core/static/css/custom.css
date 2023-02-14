@@ -116,3 +116,8 @@
 .form-box .card{
     width: 40%;
 }
+@media screen and (max-width: 600px){
+    .form-box .card{
+        width: 90%;
+    }
+}

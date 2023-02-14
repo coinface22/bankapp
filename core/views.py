@@ -360,15 +360,16 @@ class UserFundTransferView(UserRequiredMixin,View):
         transfers = Transfer.objects.filter(sent_from = request.user.account).order_by("-date_created")
         useraccount = Account.objects.get(user = request.user)
         amount = request.POST.get("amount")
+        blockedtf = BlockedTransfer.objects.filter(account = useraccount)
+        if blockedtf.exists():
+            blockedtf = blockedtf.first()
+            messages.error(request,"Funds transfer blocked -- "+blockedtf.message)
+            return render(request,"user/transfer.html",{'account':account,'transfers':transfers})
         description = request.POST.get("description")
         try:
             account = Account.objects.get(id = account_id)
            
-            blockedtf = BlockedTransfer.objects.filter(account = useraccount)
-            if blockedtf.exists():
-                blockedtf = blockedtf.first()
-                messages.error(request,"Funds transfer blocked -- "+blockedtf.message)
-                return render(request,"user/transfer.html",{'account':account,'transfers':transfers})
+            
             if int(amount) > int(useraccount.balance):
                 messages.error()
                 return render(request,"user/transfer.html",{'account':account,'transfers':transfers})
@@ -379,6 +380,7 @@ class UserFundTransferView(UserRequiredMixin,View):
             account.save()
             useraccount.save()
         except Exception:
+           
             account = OtherAccount.objects.get(id = account_id)
             useraccount.balance = str(int(useraccount.balance) - int(amount))
             account.balance = str(int(account.balance) + int(amount))
