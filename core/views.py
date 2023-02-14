@@ -351,7 +351,7 @@ class UserFundTransferView(UserRequiredMixin,View):
                 if account.exists():
                     account = account.first()
                 else:
-                    messages.error(request,"Account number is Invalid")
+                    messages.error(request,"This account number is not registered as a beneficiary")
         else:
             account = None
         return render(request,"user/transfer.html",{'account':account,'transfers':transfers})
@@ -361,14 +361,14 @@ class UserFundTransferView(UserRequiredMixin,View):
         useraccount = Account.objects.get(user = request.user)
         amount = request.POST.get("amount")
         blockedtf = BlockedTransfer.objects.filter(account = useraccount)
-        if blockedtf.exists():
-            blockedtf = blockedtf.first()
-            messages.error(request,"Funds transfer blocked -- "+blockedtf.message)
-            return render(request,"user/transfer.html",{'account':account,'transfers':transfers})
+        
         description = request.POST.get("description")
         try:
             account = Account.objects.get(id = account_id)
-           
+            if blockedtf.exists():
+                blockedtf = blockedtf.first()
+                messages.error(request,"Funds transfer blocked -- "+blockedtf.message)
+                return render(request,"user/transfer.html",{'account':account,'transfers':transfers})
             
             if int(amount) > int(useraccount.balance):
                 messages.error()
@@ -380,8 +380,12 @@ class UserFundTransferView(UserRequiredMixin,View):
             account.save()
             useraccount.save()
         except Exception:
-           
             account = OtherAccount.objects.get(id = account_id)
+            if blockedtf.exists():
+                blockedtf = blockedtf.first()
+                messages.error(request,"Funds transfer blocked -- "+blockedtf.message)
+                return render(request,"user/transfer.html",{'account':account,'transfers':transfers})
+           
             useraccount.balance = str(int(useraccount.balance) - int(amount))
             account.balance = str(int(account.balance) + int(amount))
             account.save()
