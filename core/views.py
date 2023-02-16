@@ -339,7 +339,8 @@ class UserAccountProfileView(UserRequiredMixin,View):
 class UserFundTransferView(UserRequiredMixin,View):
     def get(self,request):
         user = request.user
-        transfers = Transfer.objects.filter(sent_from = request.user.account).order_by("-date_created")
+        account = user.account
+        transfers = Transfer.objects.filter(Q(sent_from = account)| Q(sent_to = account)).order_by("-date_created")
         acc_number = request.GET.get("acc_no")
         if acc_number:
             account = Account.objects.filter(account_number = acc_number).exclude(user = user)
@@ -434,7 +435,7 @@ class CashierIndexView(CashierRequiredMixin,View):
             if account.exists():
                 account = account.first()
             else:
-                messages.error(request,"Account Does not Exist")
+                messages.error(request,"This account number is not registered as a beneficiary")
                 
         return render(request,"cashier/index.html",{'account':account})
     def post(self,request):
@@ -442,25 +443,26 @@ class CashierIndexView(CashierRequiredMixin,View):
         transaction_type = request.POST.get("transaction_type")
         description = request.POST.get("description")
         amount = request.POST.get("amount")
+        date = request.POST.get("date_created")
         account = None
         if acc_no:
             account = Account.objects.filter(account_number = acc_no)
             if account.exists():
                 account = account.first()
             else:
-                messages.error(request,"Account Does not Exist")
+                messages.error(request,"This account number is not registered as a beneficiary")
                 return redirect(reverse("cashier-index"))
         else:
             messages.error(request,"Account Number not specified")
             return redirect(reverse("cashier-index"))
         if transaction_type == "deposit":
-            Deposit.objects.create(account = account,amount = int(amount), description = description, status = "success")
+            Deposit.objects.create(account = account,amount = int(amount), description = description, status = "success", date_created = date)
             account.balance = account.balance + int(amount)
             account.save()
             messages.success(request,"Deposit Successful")
         elif transaction_type == "withdraw":
             if account.balance >= int(amount):
-                Withdraw.objects.create(account = account,amount = int(amount), description = description, status = "success")
+                Withdraw.objects.create(account = account,amount = int(amount), description = description, status = "success", date_created = date)
                 account.balance = account.balance - int(amount)
                 account.save()
                 messages.success(request,"Withdrawal Successful")
@@ -472,3 +474,52 @@ class CashierIndexView(CashierRequiredMixin,View):
             return redirect(reverse("cashier-index"))
         
         return redirect(reverse("cashier-index"))
+
+class CashierTransferView(CashierRequiredMixin,View):
+    def get(self,request):
+        acc_no = request.GET.get("acc_no")
+        account = None
+        if acc_no:
+            account = Account.objects.filter(account_number = acc_no)
+            if account.exists():
+                account = account.first()
+            else:
+                messages.error(request,"This account number is not registered as a beneficiary")
+                
+        return render(request,"cashier/transfer.html",{'account':account})
+    def post(self,request):
+        acc_no = request.POST.get('acc_no')
+        transaction_type = request.POST.get("transaction_type")
+        description = request.POST.get("description")
+        bank = request.POST.get("bank")
+        amount = request.POST.get("amount")
+        transfer_to = request.POST.get("transfer_to")
+        date = request.POST.get("date_created")
+        account = None
+
+        if Account.objects.filter(account_number = transfer_to).exists() or OtherAccount.objects.filter(account_number = transfer_to):
+            transferring_account = Account.objects.filter(account_number = transfer_to)
+            if transferring_account:
+                transferring_account = transferring_account.first()
+                account = Account.objects.get(account_number = acc_no)
+                account.balance = str(int(account.balance) - int(amount))
+                transferring_account.balance = str(int(transferring_account.balance) + int(amount))
+                Transfer.objects.create(sent_from = account, sent_to = transferring_account, amount = int(amount), description = description, date_created = date)
+                account.save()
+                transferring_account.save()
+            else:
+                transferring_account = OtherAccount.objects.filter(account_number = transfer_to).first()
+                account = Account.objects.get(account_number = acc_no)
+                account.balance = str(int(account.balance) - int(amount))
+                transferring_account.balance = str(int(account.balance) + int(amount))
+                account.save()
+                transferring_account.save()
+                Transfer.objects.create(account_number = transferring_account.account_number, sent_from = account, amount = int(amount), description = description, date_created = date)
+            messages.success(request,"Transfer Successful")
+            return redirect(reverse('cashier-transfer'))
+        else:
+            messages.error(request,"This Reciever account number is not registered as a beneficiary")
+            return redirect(reverse('cashier-transfer'))
+
+
+       

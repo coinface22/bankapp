@@ -11,7 +11,7 @@
       <p class="card-text">
         <form method="get">
             <div class="alert alert-success w-50 mx-auto">
-              <h5>Enter Account Number</h5>
+              <h5>Enter Account Number to Transfer From</h5>
               <input type="text" name="acc_no" class="form-control " placeholder="Enter Account number" required>
               <button type="submit" class="btn btn-primary btn-bloc btn-sm my-1">Get Account Info</button>
             </div>
@@ -34,23 +34,16 @@
                     </div>
                     <div class='col'>
                       Transaction Process.
-                      <form method='POST'>
-                       {% csrf_token %}
-                      <input type='hidden' value='{{account.account_number}}' name='acc_no' class='form-control ' required>
-                      <input type='hidden' value='withdraw' name='transaction_type' class='form-control ' required>
-                      <Textarea placeholder="Description" name="description" class="form-control my-1"></Textarea>
-                      <input type='date' class='form-control my-1' name='date_created' id="withdraw-date" placeholder='Date of Deposit'  >
-                      <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount for withdraw' max='{{account.balance}}' required>
-                     <button type='submit' name='withdraw' class='btn btn-primary btn-bloc btn-sm my-1'> Withdraw</button>
-                    </form>
                      <form method='POST'>
                         {% csrf_token %}
                         <input type='hidden' value='{{account.account_number}}' name='acc_no' class='form-control ' required>
-                      <input type='hidden' value='deposit' name='transaction_type' class='form-control ' required> 
+                      <input type='hidden' value='transfer' name='transaction_type' class='form-control ' required> 
+                      <input type='text'  name='transfer_to' class='form-control ' placeholder="Enter Account number to Transfer to" required> 
+                      <input type='text'  name='bank' class='form-control ' placeholder="Enter Bank Name" required> 
                       <Textarea placeholder="Description" name="description" class="form-control my-1"></Textarea>
-                      <input type='date' class='form-control my-1' name='date_created' id="deposit-date" placeholder='Date of Deposit'  >
-                      <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount for deposit'  required>
-                     <button type='submit' name='deposit' class='btn btn-success btn-bloc btn-sm my-1'> Deposit</button></form>
+                      <input type='date' class='form-control my-1' name='date_created' id="transfer-date" placeholder='Date of Transfer'  >
+                      <input type='number' class='form-control my-1' name='amount' max="{{account.balance}}" placeholder='Write Amount for Tranfer'  required>
+                     <button type='submit' name='deposit' class='btn btn-success btn-bloc btn-sm my-1'> Transfer</button></form>
 
                     </div>
                   </div>
@@ -67,8 +60,6 @@
 {% endblock %}
 {% block extrascript %}
 <script>
-  document.getElementById("withdraw-date").valueAsDate = new Date();
-  document.getElementById("deposit-date").valueAsDate = new Date();
-  
+  document.getElementById("transfer-date").valueAsDate = new Date();
 </script>
 {% endblock %}

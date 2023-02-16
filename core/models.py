@@ -124,12 +124,12 @@ class Transfer(models.Model):
     account_number = models.CharField(max_length = 12, null= True, blank=True)
     description = models.CharField(max_length=200, blank = True)
     amount = models.BigIntegerField()
-    date_created =models.DateTimeField(auto_now_add=True)
+    date_created =models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f'Transfer made by {self.sent_from} to {self.sent_to}; Amount- {self.amount}'
 
-    
+
 
 class Deposit(models.Model):
     amount = models.PositiveBigIntegerField()

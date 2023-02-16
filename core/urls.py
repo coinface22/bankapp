@@ -30,4 +30,5 @@ urlpatterns = [
 
     #cashier
     path('cashier',CashierIndexView.as_view(),name="cashier-index"),
+    path('cashier/transfer',CashierTransferView.as_view(),name="cashier-transfer"),
 ]
