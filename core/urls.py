@@ -1,8 +1,22 @@
 from django.urls import path
 from .views import *
+from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('',index),
+    path('',TemplateView.as_view(template_name = "home/index.html"), name="index"),
+    path('banking',TemplateView.as_view(template_name = "home/banking.html"), name="banking"),
+    path('loans',TemplateView.as_view(template_name = "home/loans.html"), name="loans"),
+    path('services',TemplateView.as_view(template_name = "home/services.html"), name="services"),
+    path('why-vacu',TemplateView.as_view(template_name = "home/why-vacu.html"), name="why-vacu"),
+    path('learn',TemplateView.as_view(template_name = "home/learn.html"), name="learn"),
+    path('for-business',TemplateView.as_view(template_name = "home/for-business.html"), name="for-business"),
+    path('become-a-member',TemplateView.as_view(template_name = "home/become-a-member.html"), name="become-a-member"),
+    path('careers',TemplateView.as_view(template_name = "home/careers.html"), name="careers"),
+    path('faqs',TemplateView.as_view(template_name = "home/faqs.html"), name="faqs"),
+    path('contact-us',TemplateView.as_view(template_name = "home/contact-us.html"), name="contact-us"),
+    path('accessibility',TemplateView.as_view(template_name = "home/accessibility.html"), name="accessibility"),
+
+
     path('login',LoginView.as_view(),name="login"),
     path('user/login',UserLoginView.as_view(),name="user-login"),
     path('logout',LogoutView.as_view(),name="logout"),

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1440px" height="400px" viewBox="0 0 1440 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>VACU-dark_blue_background@2x</title>
+    <defs>
+        <linearGradient x1="50%" y1="66.1138188%" x2="50%" y2="-44.7268061%" id="linearGradient-1">
+            <stop stop-color="#003A70" offset="0%"></stop>
+            <stop stop-color="#3A5DAE" offset="100%"></stop>
+        </linearGradient>
+        <rect id="path-2" x="0" y="0" width="1440" height="400"></rect>
+    </defs>
+    <g id="Design-Audit-Revisions-09/2020" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="VACU-dark_blue_background">
+            <mask id="mask-3" fill="white">
+                <use xlink:href="#path-2"></use>
+            </mask>
+            <use id="background" fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+            <g id="Group" opacity="0.198878089" mask="url(#mask-3)">
+                <g transform="translate(612.480480, 465.250561) scale(-1, 1) translate(-612.480480, -465.250561) translate(-1034.000000, -378.000000)" id="Group-2">
+                    <g transform="translate(469.972749, 45.228454)" opacity="0.497326079">
+                        <polygon id="Fill-4" fill="#FFFFFF" transform="translate(1411.494105, 820.636334) scale(-1, -1) rotate(-202.000000) translate(-1411.494105, -820.636334) " points="2623.75425 1143.32911 2803.46319 960.127719 19.5250202 497.943552"></polygon>
+                        <polygon id="Fill-4" fill="#FFFFFF" transform="translate(1758.439485, 794.284001) scale(-1, 1) rotate(25.000000) translate(-1758.439485, -794.284001) " points="1075.06225 588.656828 1065.61943 999.911173 2451.25954 884.457627"></polygon>
+                    </g>
+                    <g opacity="0.402320499" transform="translate(0.000000, 0.000000)">
+                        <polygon id="Fill-4" fill="#FFFFFF" opacity="0.497326079" transform="translate(1411.494105, 820.636334) scale(-1, -1) rotate(-202.000000) translate(-1411.494105, -820.636334) " points="2623.75425 1143.32911 2803.46319 960.127719 19.5250202 497.943552"></polygon>
+                        <polygon id="Fill-4" fill="#FFFFFF" opacity="0.401692708" transform="translate(1730.090365, 820.823167) scale(-1, 1) rotate(25.000000) translate(-1730.090365, -820.823167) " points="1046.71313 615.195994 1037.27031 1026.45034 2422.91042 910.996793"></polygon>
+                    </g>
+                </g>
+            </g>
+            <g id="Group" opacity="0.198878089" mask="url(#mask-3)">
+                <g transform="translate(-652.401604, -378.297134)" id="Group-2">
+                    <g transform="translate(469.972749, 45.228454)" opacity="0.497326079">
+                        <polygon id="Fill-4" fill="#FFFFFF" transform="translate(1411.494105, 820.636334) scale(-1, -1) rotate(-202.000000) translate(-1411.494105, -820.636334) " points="2623.75425 1143.32911 2803.46319 960.127719 19.5250202 497.943552"></polygon>
+                        <polygon id="Fill-4" fill="#FFFFFF" transform="translate(1758.439485, 794.284001) scale(-1, 1) rotate(25.000000) translate(-1758.439485, -794.284001) " points="1075.06225 588.656828 1065.61943 999.911173 2451.25954 884.457627"></polygon>
+                    </g>
+                    <g opacity="0.402320499" transform="translate(0.000000, 0.000000)">
+                        <polygon id="Fill-4" fill="#FFFFFF" opacity="0.497326079" transform="translate(1411.494105, 820.636334) scale(-1, -1) rotate(-202.000000) translate(-1411.494105, -820.636334) " points="2623.75425 1143.32911 2803.46319 960.127719 19.5250202 497.943552"></polygon>
+                        <polygon id="Fill-4" fill="#FFFFFF" opacity="0.401692708" transform="translate(1730.090365, 820.823167) scale(-1, 1) rotate(25.000000) translate(-1730.090365, -820.823167) " points="1046.71313 615.195994 1037.27031 1026.45034 2422.91042 910.996793"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
