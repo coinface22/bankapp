@@ -76,7 +76,7 @@ class UserLogoutView(LoginRequiredMixin,View):
     def get(self,request):
         logout(request)
         messages.success(request,"Logout SuccessFul")
-        return redirect(reverse("user-login"))
+        return redirect(reverse("index"))
 
 class ManagerDashboardView(ManagerRequiredMixin,ListView):
     model = Account
